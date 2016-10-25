@@ -13,5 +13,5 @@ HOST="build-feeds.victronenergy.com"
 FULL_PATH="/mnt/data/www/html/build-feeds/venus/$subdir"
 echo "Uploading to: $HOST:$FULL_PATH"
 ssh builder@$HOST "mkdir -p $FULL_PATH/"
-time rsync -v -arlt --delete ./artifacts/ builder@$HOST:$FULL_PATH
+time rsync -v -arlt ./artifacts/ builder@$HOST:$FULL_PATH
 

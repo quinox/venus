@@ -26,7 +26,7 @@ stages:
     paths:
     - artifacts-danny-bpp3.tgz
 
-build-danny-ccgx-swu:
+.build-danny-ccgx-swu:
   script:
     - make CONFIG=danny reconf fetch-all build/conf/bblayers.conf
     - ./build-danny-ccgx-swu.sh all
@@ -40,7 +40,7 @@ build-danny-ccgx-swu:
     paths:
     - artifacts-danny-ccgx.tgz
 
-build-jethro:
+.build-jethro:
   script:
     - make CONFIG=jethro reconf fetch-all build/conf/bblayers.conf
     - ./build-jethro-cortexa8hf.sh
@@ -73,7 +73,7 @@ build-jethro:
     paths:
     - deploy/venus/images
 
-build-debian-packages:
+.build-debian-packages:
   script:
     - make CONFIG=raspbian reconf fetch-all build/conf/bblayers.conf
     - ./build-all-debian-packages.sh
@@ -87,16 +87,24 @@ build-debian-packages:
     paths:
     - artifacts-deb.tgz
 
+build-almere:
+  script:
+    - uname -a > almere-test
+    - tar -cf artifacts-test.tgz uname-almere
+  artifacts:
+    expire_in: 1 week
+    paths:
+    - artifacts-test.tgz
+
 deploy:
   script:
     - rm -rf artifacts; find . -maxdepth 1 -name "artifacts-*.tgz" -exec tar -xf {} \;
     - ./ci-upload-artifacts-to-build-feeds.sh $CI_BUILD_REF_NAME
   stage: deploy
   tags:
-    - venus
-    - linux
+    - osx-qt5.5
 
-deploy_www:
+.deploy_www:
   only:
     - master
   script:
